@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37710.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademiaFlowAPI", "AcademiaFlowAPI.csproj", "{8271471E-5E33-4D7C-8BBB-80F9FAD7C30E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8271471E-5E33-4D7C-8BBB-80F9FAD7C30E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8271471E-5E33-4D7C-8BBB-80F9FAD7C30E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8271471E-5E33-4D7C-8BBB-80F9FAD7C30E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8271471E-5E33-4D7C-8BBB-80F9FAD7C30E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0048AE6-76E0-4504-A81C-F8D9688013AA}
+	EndGlobalSection
+EndGlobal
