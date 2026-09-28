@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using AcademiaFlowAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AcademiaFlowAPI.Models;
+namespace AcademiaFlowAPI.Data;
 
 public partial class GestionesAcademicasDbContext : DbContext
 {

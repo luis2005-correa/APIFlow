@@ -1,4 +1,6 @@
-using AcademiaFlowAPI.Models;
+using AcademiaFlowAPI.Data;
+using AcademiaFlowAPI.Interfaces;
+using AcademiaFlowAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IActividadService, ActividadService>();
+
 
 builder.Services.AddDbContext<GestionesAcademicasDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("con")));
