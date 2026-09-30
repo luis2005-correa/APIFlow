@@ -1,82 +1,119 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AcademiaFlowAPI.Data;
-using AcademiaFlowAPI.Models;
-using AcademiaFlowAPI.Services.Common;
+﻿using Microsoft.AspNetCore.Mvc;
 using AcademiaFlowAPI.Services.Interfaces;
 using AcademiaFlowAPI.ViewModel;
-using Microsoft.EntityFrameworkCore;
 
-namespace AcademiaFlowAPI.Services
+namespace AcademiaFlowAPI.Controllers
 {
-    public class ApiClienteservice : BaseService<ApiCliente, ApiClienteViewModel, long>, IApiClienteservice
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ApiClientController : ControllerBase
     {
-        public ApiClienteservice(GestionesAcademicasDbContext context) : base(context)
+        private readonly IApiClienteservice _apiClienteService;
+
+        public ApiClientController(IApiClienteservice apiClienteService)
         {
+            _apiClienteService = apiClienteService;
         }
 
-        protected override IQueryable<ApiCliente> GetQueryable()
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ApiClienteViewModel>))]
+        public async Task<IActionResult> GetAll()
         {
-            return DbSet.AsNoTracking();
+            var clientes = await _apiClienteService.GetAll();
+            return Ok(clientes);
         }
 
-        protected override ApiClienteViewModel MapToViewModel(ApiCliente entity)
+        [HttpGet("{id:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiClienteViewModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(long id)
         {
-            return ApiClienteViewModel.ToViewModel(entity);
-        }
-
-        protected override ApiCliente MapToEntity(ApiClienteViewModel model)
-        {
-            return ApiClienteViewModel.ToApiClientes(model);
-        }
-
-        public async Task<ApiClienteViewModel?> GetByClientId(Guid clientId)
-        {
-            var entity = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.ClientId == clientId);
-
-            return entity != null ? MapToViewModel(entity) : null;
-        }
-
-        public override async Task<ApiClienteViewModel> Create(ApiClienteViewModel model)
-        {
-            if (model.ClientId != Guid.Empty)
+            var cliente = await _apiClienteService.GetById(id);
+            if (cliente == null)
             {
-                var existeClientId = await DbSet.AnyAsync(x => x.ClientId == model.ClientId);
-                if (existeClientId)
+                return NotFound(new { mensaje = $"No se encontró el cliente API con ID {id}." });
+            }
+            return Ok(cliente);
+        }
+
+        [HttpGet("client-id/{clientId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiClienteViewModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByClientId(Guid clientId)
+        {
+            var cliente = await _apiClienteService.GetByClientId(clientId);
+            if (cliente == null)
+            {
+                return NotFound(new { mensaje = $"No se encontró el cliente API con ClientId {clientId}." });
+            }
+            return Ok(cliente);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiClienteViewModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromBody] ApiClienteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var nuevoCliente = await _apiClienteService.Create(model);
+                return CreatedAtAction(nameof(GetById), new { id = nuevoCliente.Id }, nuevoCliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpPut("{id:long}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(long id, [FromBody] ApiClienteViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return BadRequest(new { mensaje = "El ID de la URL no coincide con el ID del modelo." });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var resultado = await _apiClienteService.Update(id, model);
+                if (!resultado)
                 {
-                    throw new InvalidOperationException("Ya existe un cliente API registrado con ese ClientId.");
+                    return NotFound(new { mensaje = $"No se pudo actualizar. No existe el cliente API con ID {id}." });
                 }
+
+                return NoContent();
             }
-
-            var entity = MapToEntity(model);
-
-            if (entity.ClientId == Guid.Empty)
+            catch (Exception ex)
             {
-                entity.ClientId = Guid.NewGuid();
+                return BadRequest(new { mensaje = ex.Message });
             }
-
-            entity.FechaCreacion = DateTimeOffset.UtcNow;
-            entity.Activo ??= true;
-
-            DbSet.Add(entity);
-            await Context.SaveChangesAsync();
-
-            return await GetById(entity.Id) ?? MapToViewModel(entity);
         }
 
-        public override async Task<bool> Update(long id, ApiClienteViewModel model)
+        [HttpDelete("{id:long}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(long id)
         {
-            if (id != model.Id) return false;
+            var resultado = await _apiClienteService.Delete(id);
+            if (!resultado)
+            {
+                return NotFound(new { mensaje = $"No existe el cliente API con ID {id}." });
+            }
 
-            var entity = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
-            if (entity == null) return false;
-            entity.Nombre = model.Nombre;
-            entity.Activo = model.Activo;
-            await Context.SaveChangesAsync();
-            return true;
+            return NoContent();
         }
     }
 }
