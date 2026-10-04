@@ -8,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -46,9 +49,20 @@ builder.Services.AddScoped<IVerificacionService, VerificacionService>();
 builder.Services.AddDbContext<GestionesAcademicasDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("con")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Permisos", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseCors("Permisos");
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

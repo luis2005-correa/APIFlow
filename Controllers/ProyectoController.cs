@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -85,7 +85,11 @@ namespace AcademiaFlowAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errores = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+                return BadRequest(new { mensaje = string.Join("; ", errores), errors = ModelState });
             }
 
             try
@@ -95,7 +99,25 @@ namespace AcademiaFlowAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { mensaje = ex.Message });
+                var inner = ex;
+                while (inner.InnerException != null)
+                {
+                    inner = inner.InnerException;
+                }
+                var mensaje = inner.Message;
+                if (mensaje.Contains("duplicate key") || mensaje.Contains("UQ__Proyecto__06370DAC") || mensaje.Contains("duplicate") || mensaje.Contains("unique"))
+                {
+                    mensaje = $"Ya existe un proyecto con el código '{model.Codigo}'. Por favor ingresa un código único diferente.";
+                }
+                else if (mensaje.Contains("FK__Proyecto__IdInst"))
+                {
+                    mensaje = "La institución seleccionada no es válida o no existe en la base de datos.";
+                }
+                else if (mensaje.Contains("FK__Proyecto__IdLide"))
+                {
+                    mensaje = "El líder seleccionado no es válido o no existe en la base de datos.";
+                }
+                return BadRequest(new { mensaje });
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AcademiaFlowAPI.Models;
 
 namespace AcademiaFlowAPI.ViewModel
@@ -9,11 +9,11 @@ namespace AcademiaFlowAPI.ViewModel
 
         public long IdProyecto { get; set; }
 
-        public string NombreProyecto { get; set; } = "";
+        public string? NombreProyecto { get; set; }
 
         public long IdUsuario { get; set; }
 
-        public string NombreUsuario { get; set; } = "";
+        public string? NombreUsuario { get; set; }
 
         public string Rol { get; set; } = null!;
 
