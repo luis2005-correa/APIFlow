@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using AcademiaFlowAPI.Dto;
 using AcademiaFlowAPI.Interfaces;
 using AcademiaFlowAPI.ViewModel;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AcademiaFlowAPI.Controllers
 {

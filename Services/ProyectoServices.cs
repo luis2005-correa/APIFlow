@@ -1,4 +1,4 @@
-﻿using AcademiaFlowAPI.Data;
+using AcademiaFlowAPI.Data;
 using AcademiaFlowAPI.Interfaces;
 using AcademiaFlowAPI.Models;
 using AcademiaFlowAPI.Services.Common;

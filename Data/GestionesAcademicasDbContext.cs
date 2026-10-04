@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using AcademiaFlowAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -91,8 +91,8 @@ public partial class GestionesAcademicasDbContext : DbContext
             entity.Property(e => e.Estado)
                 .HasMaxLength(30)
                 .HasDefaultValue("Pendiente");
-            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("(sysdatetimeoffset())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.HorasEstimadas)
                 .HasDefaultValue(0m)
                 .HasColumnType("numeric(7, 2)");
@@ -124,7 +124,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.Property(e => e.Activo).HasDefaultValue(true);
             entity.Property(e => e.ClientId).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Nombre).HasMaxLength(150);
             entity.Property(e => e.RateLimitHora).HasDefaultValue(1000);
             entity.Property(e => e.SecretHash).HasMaxLength(255);
@@ -136,7 +136,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.ToTable("ApiLog");
 
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Ip)
                 .HasMaxLength(45)
                 .IsUnicode(false);
@@ -175,7 +175,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.Property(e => e.EsVigente).HasDefaultValue(true);
             entity.Property(e => e.Extension).HasMaxLength(15);
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.HashSha256)
                 .HasMaxLength(64)
                 .IsFixedLength();
@@ -232,7 +232,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.ToTable("AsignacionTarea");
 
-            entity.Property(e => e.AsignadoEn).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.AsignadoEn).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.HorasAsignadas)
                 .HasDefaultValue(0m)
                 .HasColumnType("numeric(7, 2)");
@@ -257,7 +257,7 @@ public partial class GestionesAcademicasDbContext : DbContext
             entity.ToTable("Comentario");
 
             entity.Property(e => e.Eliminado).HasDefaultValue(false);
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             entity.HasOne(d => d.IdActividadNavigation).WithMany(p => p.Comentarios)
                 .HasForeignKey(d => d.IdActividad)
@@ -291,7 +291,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.ToTable("Cronograma");
 
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Formato).HasMaxLength(20);
             entity.Property(e => e.Nombre).HasMaxLength(200);
             entity.Property(e => e.Version).HasDefaultValue((short)1);
@@ -340,8 +340,8 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.ToTable("Fase");
 
-            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("(sysdatetimeoffset())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Nombre).HasMaxLength(200);
             entity.Property(e => e.Orden).HasDefaultValue((short)1);
             entity.Property(e => e.Peso)
@@ -364,8 +364,8 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.Property(e => e.Activo).HasDefaultValue(true);
             entity.Property(e => e.Ciudad).HasMaxLength(120);
-            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("(sysdatetimeoffset())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Naturaleza).HasMaxLength(30);
             entity.Property(e => e.Nit).HasMaxLength(30);
             entity.Property(e => e.Nombre).HasMaxLength(200);
@@ -383,7 +383,7 @@ public partial class GestionesAcademicasDbContext : DbContext
             entity.ToTable("Notificacion");
 
             entity.Property(e => e.Enlace).HasMaxLength(500);
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Leida).HasDefaultValue(false);
             entity.Property(e => e.Tipo).HasMaxLength(60);
             entity.Property(e => e.Titulo).HasMaxLength(200);
@@ -440,8 +440,8 @@ public partial class GestionesAcademicasDbContext : DbContext
             entity.Property(e => e.Estado)
                 .HasMaxLength(30)
                 .HasDefaultValue("Iniciado");
-            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("(sysdatetimeoffset())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Moneda)
                 .HasMaxLength(3)
                 .HasDefaultValue("COP")
@@ -520,7 +520,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.Property(e => e.EstadoAnterior).HasMaxLength(30);
             entity.Property(e => e.EstadoNuevo).HasMaxLength(30);
-            entity.Property(e => e.FechaCambio).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaCambio).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             entity.HasOne(d => d.CambiadoPorNavigation).WithMany(p => p.ProyectoEstadoHistorialCambiadoPorNavigations)
                 .HasForeignKey(d => d.CambiadoPor)
@@ -613,7 +613,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.ToTable("RegistroAvance");
 
-            entity.Property(e => e.FechaReporte).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaReporte).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.HorasDedicadas).HasColumnType("numeric(7, 2)");
             entity.Property(e => e.Porcentaje).HasColumnType("numeric(5, 2)");
 
@@ -668,8 +668,8 @@ public partial class GestionesAcademicasDbContext : DbContext
             entity.Property(e => e.Estado)
                 .HasMaxLength(30)
                 .HasDefaultValue("Pendiente");
-            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("(sysdatetimeoffset())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.HorasEstimadas)
                 .HasDefaultValue(0m)
                 .HasColumnType("numeric(7, 2)");
@@ -721,8 +721,8 @@ public partial class GestionesAcademicasDbContext : DbContext
             entity.ToTable("UnidadAcademica");
 
             entity.Property(e => e.Activo).HasDefaultValue(true);
-            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("(sysdatetimeoffset())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Nombre).HasMaxLength(200);
             entity.Property(e => e.Tipo).HasMaxLength(60);
 
@@ -750,8 +750,8 @@ public partial class GestionesAcademicasDbContext : DbContext
             entity.Property(e => e.Cargo).HasMaxLength(120);
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.EmailConfirmado).HasDefaultValue(false);
-            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("(sysdatetimeoffset())");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.NombreCompleto)
                 .HasMaxLength(241)
                 .HasComputedColumnSql("(([Nombres]+' ')+[Apellidos])", true);
@@ -776,7 +776,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.ToTable("UsuarioRol");
 
-            entity.Property(e => e.AsignadoEn).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.AsignadoEn).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             entity.HasOne(d => d.AsignadoPorNavigation).WithMany(p => p.UsuarioRolAsignadoPorNavigations)
                 .HasForeignKey(d => d.AsignadoPor)
@@ -797,7 +797,7 @@ public partial class GestionesAcademicasDbContext : DbContext
 
             entity.ToTable("Verificacion");
 
-            entity.Property(e => e.FechaAsignacion).HasDefaultValueSql("(sysdatetimeoffset())");
+            entity.Property(e => e.FechaAsignacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Resultado)
                 .HasMaxLength(30)
                 .HasDefaultValue("Pendiente");

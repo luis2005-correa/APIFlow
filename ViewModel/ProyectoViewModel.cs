@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AcademiaFlowAPI.Models;
 
 namespace AcademiaFlowAPI.ViewModel
@@ -23,7 +23,7 @@ namespace AcademiaFlowAPI.ViewModel
 
         public long IdInstitucion { get; set; }
 
-        public string NombreInstitucion { get; set; } = "";
+        public string? NombreInstitucion { get; set; }
 
         public long? IdUnidadAcademica { get; set; }
 
@@ -31,7 +31,7 @@ namespace AcademiaFlowAPI.ViewModel
 
         public long IdLider { get; set; }
 
-        public string NombreLider { get; set; } = "";
+        public string? NombreLider { get; set; }
 
         public string? Estado { get; set; }
 
